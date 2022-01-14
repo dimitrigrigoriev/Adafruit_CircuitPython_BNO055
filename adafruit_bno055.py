@@ -743,19 +743,19 @@ class BNO055_I2C(BNO055):
     """
 
     _temperature = _ReadOnlyUnaryStruct(0x34, "b")
-    _acceleration = _ScaledReadOnlyStruct(0x08, "<hhh", 1 / 100)
-    _magnetic = _ScaledReadOnlyStruct(0x0E, "<hhh", 1 / 16)
-    _gyro = _ScaledReadOnlyStruct(0x14, "<hhh", 0.001090830782496456)
-    _euler = _ScaledReadOnlyStruct(0x1A, "<hhh", 1 / 16)
-    _quaternion = _ScaledReadOnlyStruct(0x20, "<hhhh", 1 / (1 << 14))
-    _linear_acceleration = _ScaledReadOnlyStruct(0x28, "<hhh", 1 / 100)
+    _acceleration = _ScaledReadOnlyStruct(0x08, "<hhhhhhh", 1 / 100)
+    _magnetic = _ScaledReadOnlyStruct(0x0E, "<hhhhhhh", 1 / 16)
+    _gyro = _ScaledReadOnlyStruct(0x14, "<hhhhhhh", 0.001090830782496456)
+    _euler = _ScaledReadOnlyStruct(0x1A, "<hhhhhhh", 1 / 16)
+    _quaternion = _ScaledReadOnlyStruct(0x20, "<hhhhhhh", 1 / (1 << 14))
+    _linear_acceleration = _ScaledReadOnlyStruct(0x28, "<hhhhhhh", 1 / 100)
     _gravity = _ScaledReadOnlyStruct(0x2E, "<hhh", 1 / 100)
 
-    offsets_accelerometer = _ModeStruct(_OFFSET_ACCEL_REGISTER, "<hhh", CONFIG_MODE)
+    offsets_accelerometer = _ModeStruct(_OFFSET_ACCEL_REGISTER, "<hhhhhhh", CONFIG_MODE)
     """Calibration offsets for the accelerometer"""
-    offsets_magnetometer = _ModeStruct(_OFFSET_MAGNET_REGISTER, "<hhh", CONFIG_MODE)
+    offsets_magnetometer = _ModeStruct(_OFFSET_MAGNET_REGISTER, "<hhhhhhh", CONFIG_MODE)
     """Calibration offsets for the magnetometer"""
-    offsets_gyroscope = _ModeStruct(_OFFSET_GYRO_REGISTER, "<hhh", CONFIG_MODE)
+    offsets_gyroscope = _ModeStruct(_OFFSET_GYRO_REGISTER, "<hhhhhhh", CONFIG_MODE)
     """Calibration offsets for the gyroscope"""
 
     radius_accelerometer = _ModeStruct(_RADIUS_ACCEL_REGISTER, "<h", CONFIG_MODE)
