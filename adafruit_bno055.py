@@ -687,13 +687,13 @@ class BNO055_I2C(BNO055):
     """
 
     _temperature = _ReadOnlyUnaryStruct(0x34, "b")
-    _acceleration = _ScaledReadOnlyStruct(0x08, "<hhh", 0.001)
+    _acceleration = _ScaledReadOnlyStruct(0x08, "<hhh", 0.0099999999)
     _magnetic = _ScaledReadOnlyStruct(0x0E, "<hhh", 1 / 16)
     _gyro = _ScaledReadOnlyStruct(0x14, "<hhh", 0.001090830782496456)
     _euler = _ScaledReadOnlyStruct(0x1A, "<hhh", 1 / 16)
     _quaternion = _ScaledReadOnlyStruct(0x20, "<hhhh", 1 / (1 << 14))
-    _linear_acceleration = _ScaledReadOnlyStruct(0x28, "<hhh", 0.001)
-    _gravity = _ScaledReadOnlyStruct(0x2E, "<hhh", 0.001)
+    _linear_acceleration = _ScaledReadOnlyStruct(0x28, "<hhh", 0.0099999999)
+    _gravity = _ScaledReadOnlyStruct(0x2E, "<hhh", 0.0099999999)
 
     offsets_accelerometer = _ModeStruct(_OFFSET_ACCEL_REGISTER, "<hhh", CONFIG_MODE)
     """Calibration offsets for the accelerometer"""
@@ -776,7 +776,7 @@ class BNO055_UART(BNO055):
     @property
     def _acceleration(self):
         resp = struct.unpack("<hhh", self._read_register(0x08, 6))
-        return tuple(x * 0.001 for x in resp)
+        return tuple(x * 0.0099999999 for x in resp)
 
     @property
     def _magnetic(self):
@@ -801,12 +801,12 @@ class BNO055_UART(BNO055):
     @property
     def _linear_acceleration(self):
         resp = struct.unpack("<hhh", self._read_register(0x28, 6))
-        return tuple(x * 0.001 for x in resp)
+        return tuple(x * 0.0099999999 for x in resp)
 
     @property
     def _gravity(self):
         resp = struct.unpack("<hhh", self._read_register(0x2E, 6))
-        return tuple(x * 0.001 for x in resp)
+        return tuple(resp)
 
     @property
     def offsets_accelerometer(self):
