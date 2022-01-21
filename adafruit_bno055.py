@@ -832,7 +832,7 @@ class BNO055_UART(BNO055):
     @property
     def _acceleration(self):
         resp = struct.unpack("<hhh", self._read_register(0x08, 6))
-        return tuple(x / 100 for x in resp)
+        return resp
 
     @property
     def _magnetic(self):
@@ -857,12 +857,12 @@ class BNO055_UART(BNO055):
     @property
     def _linear_acceleration(self):
         resp = struct.unpack("<hhh", self._read_register(0x28, 6))
-        return tuple(x / 100 for x in resp)
+        return tuple(x  for x in resp)
 
     @property
     def _gravity(self):
         resp = struct.unpack("<hhh", self._read_register(0x2E, 6))
-        return tuple(x / 100 for x in resp)
+        return tuple(x  for x in resp)
 
     @property
     def offsets_accelerometer(self):
