@@ -5,28 +5,17 @@
 """
 `adafruit_bno055`
 =======================================================================================
-
 This is a CircuitPython driver for the Bosch BNO055 nine degree of freedom
 inertial measurement unit module with sensor fusion.
-
 * Author(s): Radomir Dopieralski
-
-
 **Hardware:**
-
 * Adafruit `9-DOF Absolute Orientation IMU Fusion Breakout - BNO055
   <https://www.adafruit.com/product/4646>`_ (Product ID: 4646)
-
-
 **Software and Dependencies:**
-
 * Adafruit CircuitPython firmware for the supported boards:
   https://circuitpython.org/downloads
-
 * Adafruit's Bus Device library: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
-
 * Adafruit's Register library: https://github.com/adafruit/Adafruit_CircuitPython_Register
-
 """
 import time
 import struct
@@ -181,31 +170,19 @@ class _ModeStruct(Struct):  # pylint: disable=too-few-public-methods
 class BNO055:  # pylint: disable=too-many-public-methods
     """
     Base class for the BNO055 9DOF IMU sensor.
-
     **Quickstart: Importing and using the device**
-
         Here is an example of using the :class:`BNO055` class.
         First you will need to import the libraries to use the sensor
-
         .. code-block:: python
-
             import board
             import adafruit_bno055
-
         Once this is done you can define your `board.I2C` object and define your sensor object
-
         .. code-block:: python
-
             i2c = board.I2C()  # uses board.SCL and board.SDA
             sensor = adafruit_bno055.BNO055_I2C(i2c)
-
-
         Now you have access to the :attr:`acceleration` attribute among others
-
         .. code-block:: python
-
             sensor = accelerometer.acceleration
-
     """
 
     def __init__(self):
@@ -237,7 +214,6 @@ class BNO055:  # pylint: disable=too-many-public-methods
     def mode(self):
         """
         legend: x=on, -=off (see Table 3-3 in datasheet)
-
         +------------------+-------+---------+------+----------+----------+
         | Mode             | Accel | Compass | Gyro | Fusion   | Fusion   |
         |                  |       | (Mag)   |      | Absolute | Relative |
@@ -268,78 +244,49 @@ class BNO055:  # pylint: disable=too-many-public-methods
         +------------------+-------+---------+------+----------+----------+
         | NDOF_MODE        |   X   |   X     |  X   |     X    |     -    |
         +------------------+-------+---------+------+----------+----------+
-
         The default mode is :const:`NDOF_MODE`.
-
         | You can set the mode using the line below:
         | ``sensor.mode = adafruit_bno055.ACCONLY_MODE``
         | replacing :const:`ACCONLY_MODE` with the mode you want to use
-
         .. data:: CONFIG_MODE
-
            This mode is used to configure BNO, wherein all output data is reset to zero and sensor
            fusion is halted.
-
         .. data:: ACCONLY_MODE
-
            In this mode, the BNO055 behaves like a stand-alone acceleration sensor. In this mode the
            other sensors (magnetometer, gyro) are suspended to lower the power consumption.
-
         .. data:: MAGONLY_MODE
-
            In MAGONLY mode, the BNO055 behaves like a stand-alone magnetometer, with acceleration
            sensor and gyroscope being suspended.
-
         .. data:: GYRONLY_MODE
-
            In GYROONLY mode, the BNO055 behaves like a stand-alone gyroscope, with acceleration
            sensor and magnetometer being suspended.
-
         .. data:: ACCMAG_MODE
-
            Both accelerometer and magnetometer are switched on, the user can read the data from
            these two sensors.
-
         .. data:: ACCGYRO_MODE
-
            Both accelerometer and gyroscope are switched on; the user can read the data from these
            two sensors.
-
         .. data:: MAGGYRO_MODE
-
            Both magnetometer and gyroscope are switched on, the user can read the data from these
            two sensors.
-
         .. data:: AMG_MODE
-
            All three sensors accelerometer, magnetometer and gyroscope are switched on.
-
         .. data:: IMUPLUS_MODE
-
            In the IMU mode the relative orientation of the BNO055 in space is calculated from the
            accelerometer and gyroscope data. The calculation is fast (i.e. high output data rate).
-
         .. data:: COMPASS_MODE
-
            The COMPASS mode is intended to measure the magnetic earth field and calculate the
            geographic direction.
-
         .. data:: M4G_MODE
-
            The M4G mode is similar to the IMU mode, but instead of using the gyroscope signal to
            detect rotation, the changing orientation of the magnetometer in the magnetic field is
            used.
-
         .. data:: NDOF_FMC_OFF_MODE
-
            This fusion mode is same as NDOF mode, but with the Fast Magnetometer Calibration turned
            ‘OFF’.
-
         .. data:: NDOF_MODE
-
            This is a fusion mode with 9 degrees of freedom where the fused absolute orientation data
            is calculated from accelerometer, gyroscope and the magnetometer.
-
         """
         return self._read_register(_MODE_REGISTER) & 0b00001111  # Datasheet Table 4-2
 
@@ -673,7 +620,6 @@ class BNO055:  # pylint: disable=too-many-public-methods
     @property
     def axis_remap(self):
         """Return a tuple with the axis remap register values.
-
         This will return 6 values with the following meaning:
           - X axis remap (a value of AXIS_REMAP_X, AXIS_REMAP_Y, or AXIS_REMAP_Z.
                           which indicates that the physical X axis of the chip
@@ -685,7 +631,6 @@ class BNO055:  # pylint: disable=too-many-public-methods
                          normal or negative/inverted.  The default is positive.)
           - Y axis sign (see above)
           - Z axis sign (see above)
-
         Note that the default value, per the datasheet, is NOT P0,
         but rather P1 ()
         """
@@ -705,7 +650,6 @@ class BNO055:  # pylint: disable=too-many-public-methods
     @axis_remap.setter
     def axis_remap(self, remap):
         """Pass a tuple consisting of x, y, z, x_sign, y-sign, and z_sign.
-
         Set axis remap for each axis.  The x, y, z parameter values should
         be set to one of AXIS_REMAP_X (0x00), AXIS_REMAP_Y (0x01), or
         AXIS_REMAP_Z (0x02) and will change the BNO's axis to represent another
@@ -743,13 +687,13 @@ class BNO055_I2C(BNO055):
     """
 
     _temperature = _ReadOnlyUnaryStruct(0x34, "b")
-    _acceleration = _ScaledReadOnlyStruct(0x08, "<hhh", 1 / 100)
+    _acceleration = _ScaledReadOnlyStruct(0x08, "<hhh", 0.001)
     _magnetic = _ScaledReadOnlyStruct(0x0E, "<hhh", 1 / 16)
     _gyro = _ScaledReadOnlyStruct(0x14, "<hhh", 0.001090830782496456)
     _euler = _ScaledReadOnlyStruct(0x1A, "<hhh", 1 / 16)
     _quaternion = _ScaledReadOnlyStruct(0x20, "<hhhh", 1 / (1 << 14))
-    _linear_acceleration = _ScaledReadOnlyStruct(0x28, "<hhh", 1 / 100)
-    _gravity = _ScaledReadOnlyStruct(0x2E, "<hhh", 1 / 100)
+    _linear_acceleration = _ScaledReadOnlyStruct(0x28, "<hhh", 0.001)
+    _gravity = _ScaledReadOnlyStruct(0x2E, "<hhh", 0.001)
 
     offsets_accelerometer = _ModeStruct(_OFFSET_ACCEL_REGISTER, "<hhh", CONFIG_MODE)
     """Calibration offsets for the accelerometer"""
@@ -832,7 +776,7 @@ class BNO055_UART(BNO055):
     @property
     def _acceleration(self):
         resp = struct.unpack("<hhh", self._read_register(0x08, 6))
-        return resp
+        return tuple(x * 0.001 for x in resp)
 
     @property
     def _magnetic(self):
@@ -857,12 +801,12 @@ class BNO055_UART(BNO055):
     @property
     def _linear_acceleration(self):
         resp = struct.unpack("<hhh", self._read_register(0x28, 6))
-        return tuple(x  for x in resp)
+        return tuple(x * 0.001 for x in resp)
 
     @property
     def _gravity(self):
         resp = struct.unpack("<hhh", self._read_register(0x2E, 6))
-        return tuple(x  for x in resp)
+        return tuple(x * 0.001 for x in resp)
 
     @property
     def offsets_accelerometer(self):
